@@ -26,7 +26,7 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: table;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .modal-wrapper {
@@ -67,7 +67,7 @@
  * these styles.
  */
 
-.modal-enter-from,
+.modal-enter,
 .modal-leave-to {
   opacity: 0;
 }

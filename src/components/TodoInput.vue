@@ -22,9 +22,7 @@ export default {
   methods: {
     addTodo: function () {
       if (this.newTodoItem !== '') {
-        var obj = { completed: false, item: this.newTodoItem };
-        // js 객체가 아니라 String이 들어가도록 stringify가 필요
-        localStorage.setItem(this.newTodoItem, JSON.stringify(obj));
+        this.$emit('addTodoItem', this.newTodoItem);
         this.clearInput();
       }
     },

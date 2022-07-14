@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <TodoHeader></TodoHeader>
-    <TodoInput></TodoInput>
-    <TodoList></TodoList>
+    <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
+    <TodoList v-bind:propsdata="todoItems"></TodoList>
     <TodoFooter></TodoFooter>
   </div>
 </template>
@@ -12,21 +12,31 @@ import TodoHeader from './components/TodoHeader.vue';
 import TodoInput from './components/TodoInput.vue';
 import TodoList from './components/TodoList.vue';
 import TodoFooter from './components/TodoFooter.vue';
-// import Vue from 'vue';
-
-// var my_cmp = {
-//   template: '<div>my component</div>',
-// };
-
-// new Vue({
-//   el: '',
-//   components: {
-//     // 컴포넌트 태그 이름: 컴포넌트 내용
-//     'my-cmp': my_cmp,
-//   },
-// });
 
 export default {
+  data: function () {
+    return {
+      todoItems: [],
+    };
+  },
+  methods: {
+    addOneItem: function (todoItem) {
+      var obj = { completed: false, item: todoItem };
+      localStorage.setItem(todoItem, JSON.stringify(obj));
+      this.todoItems.push(obj);
+    },
+  },
+  created: function () {
+    if (localStorage.length > 0) {
+      for (var i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
+          this.todoItems.push(
+            JSON.parse(localStorage.getItem(localStorage.key(i)))
+          );
+        }
+      }
+    }
+  },
   components: {
     TodoHeader: TodoHeader,
     TodoInput: TodoInput,
@@ -37,6 +47,10 @@ export default {
 </script>
 
 <style>
+* {
+  font-family: 'Ubuntu', sans-serif;
+}
+
 body {
   text-align: center;
   background-color: #f6f6f6;

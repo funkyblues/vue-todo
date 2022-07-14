@@ -9,14 +9,35 @@
         icon="fa-solid fa-plus center"
       />
     </span>
+
+    <!-- use the modal component, pass in the prop -->
+    <AlertModal v-if="showModal" @close="showModal = false">
+      <!--
+      you can use custom content here to overwrite
+      default content
+    -->
+      <h3 slot="header">
+        경고!
+        <font-awesome-icon
+          @click="showModal = false"
+          class="closeModalBtn"
+          size="xl"
+          icon="fa-solid fa-xmark"
+        />
+      </h3>
+      <div slot="body">아무것도 입력하지 않으셨습니다!</div>
+    </AlertModal>
   </div>
 </template>
 
 <script>
+import AlertModal from './common/AlertModal.vue';
+
 export default {
   data: function () {
     return {
       newTodoItem: '',
+      showModal: false,
     };
   },
   methods: {
@@ -24,11 +45,16 @@ export default {
       if (this.newTodoItem !== '') {
         this.$emit('addTodoItem', this.newTodoItem);
         this.clearInput();
+      } else {
+        this.showModal = !this.showModal;
       }
     },
     clearInput: function () {
       this.newTodoItem = '';
     },
+  },
+  components: {
+    AlertModal: AlertModal,
   },
 };
 </script>
@@ -65,5 +91,9 @@ input:focus {
 .addBtn {
   color: white;
   vertical-align: middle;
+}
+
+.closeModalBtn {
+  color: #42b983;
 }
 </style>

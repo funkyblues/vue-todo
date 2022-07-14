@@ -4,9 +4,10 @@
     <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
     <TodoList
       v-on:removeItem="removeOneItem"
+      v-on:toggleItem="toggleOneItem"
       v-bind:propsdata="todoItems"
     ></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoFooter v-on:clearAll="clearAllItems"></TodoFooter>
   </div>
 </template>
 
@@ -33,6 +34,15 @@ export default {
       localStorage.removeItem(todoItem.item);
       this.todoItems.splice(index, 1);
     },
+    toggleOneItem: function (todoItem, index) {
+      this.todoItems[index].completed = !this.todoItems[index].completed;
+      localStorage.removeItem(todoItem.item);
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    },
+    clearAllItems: function () {
+      localStorage.clear();
+      this.todoItems = [];
+    },
   },
   created: function () {
     if (localStorage.length > 0) {
@@ -56,7 +66,7 @@ export default {
 
 <style>
 * {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: 'Ubuntu', 'Spoqa Han Sans Neo', sans-serif;
 }
 
 body {

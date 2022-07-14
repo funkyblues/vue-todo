@@ -2,7 +2,10 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems"></TodoList>
+    <TodoList
+      v-on:removeItem="removeOneItem"
+      v-bind:propsdata="todoItems"
+    ></TodoList>
     <TodoFooter></TodoFooter>
   </div>
 </template>
@@ -24,6 +27,11 @@ export default {
       var obj = { completed: false, item: todoItem };
       localStorage.setItem(todoItem, JSON.stringify(obj));
       this.todoItems.push(obj);
+    },
+    removeOneItem: function (todoItem, index) {
+      // 이렇게 해야 localStorage의 key 값을 지울 수 있음.
+      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index, 1);
     },
   },
   created: function () {

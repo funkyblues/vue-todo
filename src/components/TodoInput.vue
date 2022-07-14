@@ -1,8 +1,14 @@
 <template>
-  <div>
-    <!-- v-model은 two-way binding -->
-    <input type="text" v-model="newTodoItem" />
-    <button v-on:click="addTodo">add</button>
+  <div class="inputBox shadow">
+    <input type="text" v-model="newTodoItem" v-on:keyup.enter="addTodo" />
+
+    <span class="addContainer" v-on:click="addTodo">
+      <font-awesome-icon
+        class="white"
+        size="lg"
+        icon="fa-solid fa-plus center"
+      />
+    </span>
   </div>
 </template>
 
@@ -15,13 +21,51 @@ export default {
   },
   methods: {
     addTodo: function () {
-      // console.log(this.newTodoItem);
-      // 저장하는 로직 후, input 내용을 지우면 된다.
-      localStorage.setItem(this.newTodoItem, this.newTodoItem);
+      if (this.newTodoItem !== '') {
+        var obj = { completed: false, item: this.newTodoItem };
+        // js 객체가 아니라 String이 들어가도록 stringify가 필요
+        localStorage.setItem(this.newTodoItem, JSON.stringify(obj));
+        this.clearInput();
+      }
+    },
+    clearInput: function () {
       this.newTodoItem = '';
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.white {
+  color: #fff;
+}
+
+input:focus {
+  outline: none;
+}
+
+.inputBox {
+  background: white;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 5px;
+}
+
+.inputBox input {
+  border-style: none;
+  font-size: 0.9rem;
+}
+.addContainer {
+  float: right;
+  background: linear-gradient(to right, #6478fb, #8763fb);
+  display: block;
+  width: 3rem;
+  border-radius: 0 5px 5px 0;
+  padding: auto;
+}
+
+.addBtn {
+  color: white;
+  vertical-align: middle;
+}
+</style>
